@@ -1,6 +1,7 @@
 package main
 
 import (
+    "strings"
 	"github.com/gin-gonic/gin"
 	"log"
 	"net/http"
@@ -50,7 +51,14 @@ func AddAsset(c *gin.Context) {
         c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid data format"})
         return
     }
+    // Check if the user_id provided in the asset is the same as the user_id from the JWT token
+    if newAsset.UserID != uint(userID) {
+        log.Println("Error: User ID in the payload does not match the authenticated user")
+        c.JSON(http.StatusForbidden, gin.H{"error": "User ID in the payload does not match the authenticated user"})
+        return
+    }
 
+    newAsset.Name = strings.ToLower(newAsset.Name)
     // Validate that name and amount are not empty
     if newAsset.Name == "" {
         log.Println("Error: Name is required")
