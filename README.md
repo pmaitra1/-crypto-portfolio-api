@@ -12,19 +12,63 @@ This is a Go (Golang) based API for managing a user's cryptocurrency portfolio. 
 
 ## Prerequisites
 
-Before using this API, make sure you have the following:
 
 - **Postman** or any other tool to make API requests (optional, but recommended).
 - **JWT token**: You will need to log in to get a JWT token that will authenticate your requests.
-  
+- **Go** installed (for local setup): If you want to run the API locally, you need to have Go installed on your machine.
 
-## Heroku Deployment
+**Install Go**: [Install Go](https://golang.org/dl/)
 
-This API is deployed on Heroku. You can access it via the following URL:
+- **MySQL** or any database you are using for your application. Make sure you set up a local database for development.
 
-**Base URL**: `https://crypto-portfolio-database-17b2d3b1e315.herokuapp.com/`
 
-## API Documentation
+## Running Locally
+To run this API locally, follow the steps below:
+
+**Prerequisites**
+
+ - Go (Golang) installed on your machine
+ - PostgreSQL installed or use a cloud database (e.g., Heroku PostgreSQL)
+ ### Step 1: Clone the Repository
+ ```bash
+ git clone https://github.com/pmaitra1/-crypto-portfolio-api
+```
+
+### Step 1: Install Dependencies
+Ensure you have **Go** installed. If not, you can download and install Go from the official site: [Install Go](https://golang.org/dl/).
+
+Once Go is installed, run the following command to install the necessary dependencies for the project:
+```bash
+go mod tidy
+```
+### Step 2: Configure the Database
+
+For local development, you'll need a **MySQL** database running on your machine.
+
+-   Create a new database for this project (e.g., `crypto_portfolio`).
+### Step 3:Set Up the `.env` File
+Create a `.env` file in the root directory of your project and configure the following settings:
+```
+PORT=8080
+DATABASE_URL=your_database_url
+JWT_SECRET_KEY=your_secret_key
+```
+-   **PORT**: This is the port your local server will listen on. The default is `8080`, but you can change it if needed.
+-   **DATABASE_URL**: The connection URL for your database (e.g., PostgreSQL, MySQL).
+-   **JWT_SECRET_KEY**: A secret key to sign your JWT tokens. Use a secure, random key for production, but for local development, a simple string is fine.
+
+Example for **DATABASE_URL** (PostgreSQL):
+```plaintext
+DATABASE_URL=postgres://username:password@localhost:5432/crypto_portfolio?sslmode=disable
+```
+### Step 4: Run the Application
+```bash
+go run .
+```
+The API will be available at `http://localhost:8080`.
+
+
+## API Endpoints
 
 ### 1. Register User
 **Endpoint**: `POST /register`  
@@ -172,65 +216,6 @@ All routes that require a user to be logged in need a JWT token in the `Authoriz
 ```http
 Authorization: Bearer <JWT_TOKEN>
 ```
-## Running Locally
-To run this API locally, follow the steps below:
-
-**Prerequisites**
-
- - Go (Golang) installed on your machine
- - PostgreSQL installed or use a cloud database (e.g., Heroku PostgreSQL)
- ### Step 1: Clone the Repository
- ```bash
- git clone https://github.com/yourusername/crypto-portfolio-api.git
-cd crypto-portfolio-api
-```
-
-### Step 2: Install Dependencies
-```bash
-go mod tidy
-```
-### Step 3: Configure the Database
-Set up your PostgreSQL database connection in your `.env` file. Example:
-
-```bash
-DATABASE_URL=postgres://username:password@localhost:5432/yourdbname?sslmode=disable
-```
-### Step 4: Run the Application
-```bash
-go run main.go
-```
-The API will be available at `http://localhost:8080`.
-
-## Deployment to Heroku
-To deploy this application to Heroku, follow the steps below:
-### Step 1: Log in to Heroku
-```bash
-heroku login
-```
-### Step 2: Create a New Heroku App
-```bash
-heroku create
-```
-### Step 3: Add a PostgreSQL Add-on
-```bash
-heroku addons:create heroku-postgresql:hobby-dev
-```
-### Step 4: Push the Code to Heroku
-```bash
-git push heroku main
-```
-### Step 5: Set up Database Migrations
-Run the necessary database migrations (if applicable) to set up your tables on Heroku.
-```bash 
-heroku run "go run ."
-```
-
-### Step 6: Open the App
-Once the app is deployed, you can open it in your browser:
-```bash
-heroku open
-```
-Now your API is live on Heroku and accessible at the generated URL.
 
 ## Error Handling
 
