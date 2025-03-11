@@ -132,6 +132,6 @@ func LoginUser(c *gin.Context) {
 
     c.JSON(200, gin.H{
         "token":   tokenString,
-        "user_id": user.ID,  // Include user ID in the response
+        "user_id": dbUser.ID,  // Include user ID in the response
     })
 }
