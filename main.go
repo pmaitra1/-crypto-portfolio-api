@@ -1,6 +1,7 @@
 package main
 
 import (
+    "fmt"
     "log"
     "github.com/gin-gonic/gin"
     "github.com/joho/godotenv"
@@ -12,6 +13,11 @@ func main() {
     err := godotenv.Load()
     if err != nil {
         log.Fatal("Error loading .env file")
+    }
+
+    port := os.Getenv("PORT")
+    if port == "" {
+        port = "8080"  // Fallback to 8080 if PORT is not set
     }
 
     InitDB() // Initialize database connection
@@ -29,7 +35,7 @@ func main() {
     r.DELETE("/portfolio/:id", JWTMiddleware(), DeleteAsset)
 
     // Run the server
-    if err := r.Run(":8080"); err != nil {
+    if err := r.Run(":" + port); err != nil {
         log.Fatal("Failed to run server:", err)
     }
 }
